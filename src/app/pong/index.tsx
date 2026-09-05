@@ -65,7 +65,7 @@ export default function NumbersPongSetup() {
         <Text style={styles.heroEmoji}>🏓</Text>
         <Text style={styles.heroTitle}>Numbers Pong</Text>
         <Text style={styles.heroSubtitle}>
-          Bounce the ball — don't let it fall!
+          Bounce the ball, don't let it fall!
         </Text>
       </View>
 

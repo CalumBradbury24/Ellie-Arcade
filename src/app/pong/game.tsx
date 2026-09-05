@@ -28,6 +28,21 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+/**
+ * Blends a hex colour with white at `alpha` strength (0–1) to produce a
+ * subtle tinted background. Returns an rgb() string.
+ */
+function tintBackground(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  // Blend toward white
+  const tr = Math.round(r * alpha + 255 * (1 - alpha));
+  const tg = Math.round(g * alpha + 255 * (1 - alpha));
+  const tb = Math.round(b * alpha + 255 * (1 - alpha));
+  return `rgb(${tr}, ${tg}, ${tb})`;
+}
+
 function randomSign() {
   'worklet';
   return Math.random() > 0.5 ? 1 : -1;
@@ -219,8 +234,8 @@ export default function GameScreen() {
     const difficultyLabel = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
     const isNewBest = score > 0 && score >= highScore;
     const message = isNewBest
-      ? `🏆 New best! I scored ${score} in Numbers Pong (${difficultyLabel}) on Ellie Arcade! Can you beat it? ${emoji}`
-      : `🏓 I scored ${score} in Numbers Pong (${difficultyLabel}) on Ellie Arcade! Think you can do better? ${emoji}`;
+      ? `🏆 New best! I scored ${score} in Pong (${difficultyLabel}) on Ellie Arcade! Can you beat it? ${emoji}`
+      : `🏓 I scored ${score} in Pong (${difficultyLabel}) on Ellie Arcade! Think you can do better? ${emoji}`;
     Share.share({ message });
   }
 
@@ -231,7 +246,7 @@ export default function GameScreen() {
   // ── Render ──
   return (
     <GestureDetector gesture={panGesture}>
-      <View style={[styles.container, { width: screenW, height: screenH }]}>
+      <View style={[styles.container, { width: screenW, height: screenH, backgroundColor: tintBackground(ballColor, 0.12) }]}>
         {/* Drifting shapes behind everything */}
         <AnimatedBackground />
 
@@ -277,7 +292,6 @@ export default function GameScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.gameBackground,
     overflow: 'hidden',
   },
   hud: {

@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors, FontSize, FontWeight, Radius, Spacing } from '@/constants/theme';
+import { ConfettiBurst } from '@/components/pong/ConfettiBurst';
 
 type GameOverlayProps = {
   score: number;
@@ -14,6 +15,9 @@ export function GameOverlay({ score, highScore, onPlayAgain, onHome, onShare }: 
 
   return (
     <View style={styles.overlay}>
+      {/* Confetti fires on top of everything when a new best is set */}
+      {isNewBest && <ConfettiBurst />}
+
       <View style={styles.card}>
         <Text style={styles.title}>Game Over! 😢</Text>
 
