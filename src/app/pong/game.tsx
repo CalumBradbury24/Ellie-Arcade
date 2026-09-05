@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Text, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Text, useWindowDimensions, Share } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useSharedValue, useFrameCallback } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { AnimatedBackground } from '@/components/pong/AnimatedBackground';
 import { Ball } from '@/components/pong/Ball';
 import { Paddle } from '@/components/pong/Paddle';
 import { ScoreDisplay } from '@/components/pong/ScoreDisplay';
@@ -40,9 +41,10 @@ export default function GameScreen() {
   const insets = useSafeAreaInsets();
 
   // ── Params ──
-  const params = useLocalSearchParams<{ difficulty: string; emoji: string }>();
+  const params = useLocalSearchParams<{ difficulty: string; emoji: string; ballColor: string }>();
   const difficulty = (params.difficulty ?? 'easy') as Difficulty;
   const emoji = params.emoji ?? '🐱';
+  const ballColor = params.ballColor ?? '#A5B4FC';
   const config = DIFFICULTY_CONFIG[difficulty];
 
   // ── High score ──
@@ -213,6 +215,15 @@ export default function GameScreen() {
     setGamePhase('playing');
   }
 
+  function handleShare() {
+    const difficultyLabel = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    const isNewBest = score > 0 && score >= highScore;
+    const message = isNewBest
+      ? `🏆 New best! I scored ${score} in Numbers Pong (${difficultyLabel}) on Ellie Arcade! Can you beat it? ${emoji}`
+      : `🏓 I scored ${score} in Numbers Pong (${difficultyLabel}) on Ellie Arcade! Think you can do better? ${emoji}`;
+    Share.share({ message });
+  }
+
   function handleHome() {
     router.replace('/');
   }
@@ -221,6 +232,9 @@ export default function GameScreen() {
   return (
     <GestureDetector gesture={panGesture}>
       <View style={[styles.container, { width: screenW, height: screenH }]}>
+        {/* Drifting shapes behind everything */}
+        <AnimatedBackground />
+
         {/* Score watermark — hidden during countdown */}
         {gamePhase !== 'countdown' && <ScoreDisplay score={score} />}
 
@@ -231,7 +245,7 @@ export default function GameScreen() {
         </View>
 
         {/* Ball — hidden during countdown */}
-        {gamePhase !== 'countdown' && <Ball x={ballX} y={ballY} emoji={emoji} />}
+        {gamePhase !== 'countdown' && <Ball x={ballX} y={ballY} emoji={emoji} themeColor={ballColor} />}
 
         {/* Paddle */}
         <Paddle
@@ -252,6 +266,7 @@ export default function GameScreen() {
             highScore={highScore}
             onPlayAgain={handlePlayAgain}
             onHome={handleHome}
+            onShare={handleShare}
           />
         )}
       </View>

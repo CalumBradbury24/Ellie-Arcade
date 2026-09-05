@@ -6,9 +6,10 @@ type GameOverlayProps = {
   highScore: number;
   onPlayAgain: () => void;
   onHome: () => void;
+  onShare: () => void;
 };
 
-export function GameOverlay({ score, highScore, onPlayAgain, onHome }: GameOverlayProps) {
+export function GameOverlay({ score, highScore, onPlayAgain, onHome, onShare }: GameOverlayProps) {
   const isNewBest = score > 0 && score >= highScore;
 
   return (
@@ -41,6 +42,16 @@ export function GameOverlay({ score, highScore, onPlayAgain, onHome }: GameOverl
             accessibilityLabel="Play Again"
           >
             <Text style={styles.primaryButtonText}>Play Again 🎮</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.shareButton]}
+            onPress={onShare}
+            activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel="Share your score"
+          >
+            <Text style={styles.shareButtonText}>Share score 📤</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -149,6 +160,16 @@ const styles = StyleSheet.create({
     borderColor: Colors.cardBorder,
   },
   secondaryButtonText: {
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+    color: Colors.textDark,
+  },
+  shareButton: {
+    backgroundColor: Colors.accent,
+    borderWidth: 2,
+    borderColor: Colors.cardBorder,
+  },
+  shareButtonText: {
     fontSize: FontSize.lg,
     fontWeight: FontWeight.bold,
     color: Colors.textDark,

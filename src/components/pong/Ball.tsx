@@ -7,12 +7,14 @@ type BallProps = {
   x: SharedValue<number>;
   y: SharedValue<number>;
   emoji: string;
+  /** Per-emoji background & glow colour */
+  themeColor?: string;
 };
 
 const { ballRadius } = GameConstants;
 const diameter = ballRadius * 2;
 
-export function Ball({ x, y, emoji }: BallProps) {
+export function Ball({ x, y, emoji, themeColor = Colors.ballColor }: BallProps) {
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: x.value - ballRadius },
@@ -21,7 +23,16 @@ export function Ball({ x, y, emoji }: BallProps) {
   }));
 
   return (
-    <Animated.View style={[styles.ball, animatedStyle]}>
+    <Animated.View
+      style={[
+        styles.ball,
+        animatedStyle,
+        {
+          backgroundColor: themeColor,
+          shadowColor: themeColor,
+        },
+      ]}
+    >
       <Text style={styles.emoji} accessibilityLabel={`Ball: ${emoji}`}>
         {emoji}
       </Text>
@@ -37,14 +48,13 @@ const styles = StyleSheet.create({
     width: diameter,
     height: diameter,
     borderRadius: ballRadius,
-    backgroundColor: Colors.ballColor,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+    // Shadow intensity is higher than before so the coloured glow reads clearly
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.75,
+    shadowRadius: 12,
+    elevation: 8,
   },
   emoji: {
     fontSize: ballRadius * 1.1,

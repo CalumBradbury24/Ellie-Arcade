@@ -18,7 +18,7 @@ const GAMES: Game[] = [
     id: 'pong',
     title: 'Pong',
     emoji: '🏓',
-    description: 'Bounce the ball with your paddle. How long can you last?',
+    description: 'How long can you last?',
     locked: false,
     route: '/pong',
   },

@@ -35,16 +35,18 @@ export default function NumbersPongSetup() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const [selectedEmoji, setSelectedEmoji] = useState('🐱');
+  const [selectedEmoji, setSelectedEmoji] = useState(EMOJI_OPTIONS[0].emoji);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('easy');
   const highScores = useAllHighScores();
 
   function handlePlay() {
+    const option = EMOJI_OPTIONS.find((o) => o.emoji === selectedEmoji) ?? EMOJI_OPTIONS[0];
     router.push({
       pathname: '/pong/game',
       params: {
         difficulty: selectedDifficulty,
         emoji: selectedEmoji,
+        ballColor: option.color,
       },
     });
   }
