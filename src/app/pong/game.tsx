@@ -3,7 +3,13 @@ import { StyleSheet, View, Text, useWindowDimensions, Share } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useSharedValue, useFrameCallback } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useFrameCallback,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { AnimatedBackground } from '@/components/pong/AnimatedBackground';
@@ -83,6 +89,12 @@ export default function GameScreen() {
   // Speed tracking on the UI thread
   const currentSpeed = useSharedValue(config.initialSpeed);
 
+  // Screen-shake on miss
+  const shakeX = useSharedValue(0);
+  const shakeStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: shakeX.value }],
+  }));
+
   const { ballRadius, paddleHeight, paddleBottomOffset } = GameConstants;
   const paddleY = screenH - paddleBottomOffset - paddleHeight;
 
@@ -101,6 +113,19 @@ export default function GameScreen() {
   }, []);
 
   const onMiss = useCallback(() => {
+    // Screen shake — rapid left/right oscillation that settles back to 0
+    const D = 10; // px amplitude
+    const T = 55; // ms per step
+    shakeX.value = withSequence(
+      withTiming(-D, { duration: T }),
+      withTiming(D, { duration: T }),
+      withTiming(-D * 0.7, { duration: T }),
+      withTiming(D * 0.7, { duration: T }),
+      withTiming(-D * 0.4, { duration: T }),
+      withTiming(D * 0.4, { duration: T }),
+      withTiming(0, { duration: T }),
+    );
+
     const remaining = livesRef.current - 1;
     livesRef.current = remaining;
     setLives(remaining);
@@ -246,7 +271,7 @@ export default function GameScreen() {
   // ── Render ──
   return (
     <GestureDetector gesture={panGesture}>
-      <View style={[styles.container, { width: screenW, height: screenH, backgroundColor: tintBackground(ballColor, 0.12) }]}>
+      <Animated.View style={[styles.container, { width: screenW, height: screenH, backgroundColor: tintBackground(ballColor, 0.12) }, shakeStyle]}>
         {/* Drifting shapes behind everything */}
         <AnimatedBackground />
 
@@ -284,7 +309,7 @@ export default function GameScreen() {
             onShare={handleShare}
           />
         )}
-      </View>
+      </Animated.View>
     </GestureDetector>
   );
 }
