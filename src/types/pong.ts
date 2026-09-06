@@ -18,18 +18,18 @@ export const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
     paddleWidth: 140,
     initialSpeed: 4,
     speedIncrement: 0.15,
-    maxSpeed: 14,
+    maxSpeed: 25,
   },
   medium: {
     paddleWidth: 100,
     initialSpeed: 6,
     speedIncrement: 0.25,
-    maxSpeed: 20,
+    maxSpeed: 25,
   },
   hard: {
-    paddleWidth: 70,
+    paddleWidth: 75,
     initialSpeed: 8,
-    speedIncrement: 0.4,
+    speedIncrement: 0.35,
     maxSpeed: 25,
   },
 };

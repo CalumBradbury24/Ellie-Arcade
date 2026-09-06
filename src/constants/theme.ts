@@ -83,6 +83,6 @@ export const FontWeight = {
 export const GameConstants = {
     ballRadius: 28,
     paddleHeight: 18,
-    paddleBottomOffset: 60,  // px from bottom of screen
+    paddleBottomOffset: 40,  // px from bottom of screen
     livesCount: 3,
 } as const;

@@ -271,7 +271,7 @@ export default function GameScreen() {
   // ── Render ──
   return (
     <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.container, { width: screenW, height: screenH, backgroundColor: tintBackground(ballColor, 0.12) }, shakeStyle]}>
+      <Animated.View style={[styles.container, { width: screenW, height: screenH, backgroundColor: tintBackground(ballColor, 0.25) }, shakeStyle]}>
         {/* Drifting shapes behind everything */}
         <AnimatedBackground />
 
