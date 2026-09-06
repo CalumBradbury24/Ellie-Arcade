@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { Colors, FontSize, FontWeight } from '@/constants/theme';
 
-export default function NumbersPongLayout() {
+function PongLayout() {
   return (
     <Stack
       screenOptions={{
@@ -19,7 +19,7 @@ export default function NumbersPongLayout() {
     >
       <Stack.Screen
         name="index"
-        options={{ title: 'Numbers Pong' }}
+        options={{ title: 'Pong' }}
       />
       <Stack.Screen
         name="game"
@@ -28,3 +28,5 @@ export default function NumbersPongLayout() {
     </Stack>
   );
 }
+
+export default PongLayout;

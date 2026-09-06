@@ -44,6 +44,7 @@ export type EmojiOption = {
 };
 
 export const EMOJI_OPTIONS: EmojiOption[] = [
+  { emoji: '🦈', label: 'Shark', color: '#588ffe' }, // pastel blue
   { emoji: '🐱', label: 'Cat', color: '#FDE68A' }, // warm yellow
   { emoji: '🐶', label: 'Dog', color: '#FCA5A5' }, // pastel red
   { emoji: '🐸', label: 'Frog', color: '#86EFAC' }, // pastel green
@@ -75,4 +76,4 @@ export type GamePhase = 'playing' | 'countdown' | 'paused' | 'gameover';
 // ─── Async Storage Keys ───────────────────────────────────────────────────────
 
 export const HIGH_SCORE_KEY = (difficulty: Difficulty) =>
-  `@ellie_arcade:highscore:numbers_pong:${difficulty}`;
+  `@ellie_arcade:highscore:pong:${difficulty}`;

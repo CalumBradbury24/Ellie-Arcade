@@ -31,7 +31,7 @@ function useAllHighScores() {
   return { easy: easy.highScore, medium: medium.highScore, hard: hard.highScore };
 }
 
-export default function NumbersPongSetup() {
+export default function PongSetup() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -63,7 +63,7 @@ export default function NumbersPongSetup() {
       {/* Hero */}
       <View style={styles.hero}>
         <Text style={styles.heroEmoji}>🏓</Text>
-        <Text style={styles.heroTitle}>Numbers Pong</Text>
+        <Text style={styles.heroTitle}>Pong</Text>
         <Text style={styles.heroSubtitle}>
           Bounce the ball, don't let it fall!
         </Text>
@@ -150,7 +150,7 @@ export default function NumbersPongSetup() {
         onPress={handlePlay}
         activeOpacity={0.85}
         accessibilityRole="button"
-        accessibilityLabel="Play Numbers Pong"
+        accessibilityLabel="Play Pong"
       >
         <Text style={styles.playButtonText}>Play! 🎮</Text>
       </TouchableOpacity>
